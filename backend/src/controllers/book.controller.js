@@ -40,10 +40,7 @@ const getAllBooks = async (req, res) => {
             return res.status(404).json({ message: 'No books found' })
         }
 
-        res.status(200).json({
-            message: 'Books fetched successfully',
-            books: books
-        });
+        res.status(200).send(books);
 
     } catch (error) {
         console.error('Error fetching Books', error);
@@ -61,16 +58,13 @@ const getBooksById = async (req, res) => {
             return res.status(404).json({ message: 'Book not found' })
         }
 
-        res.status(200).json({
-            message: 'Book fetched Successfully',
-            book: book
-        });
+        res.status(200).send(book);
     } catch (error) {
         console.error('Error fetching book', error);
         res.status(500).json({ message: 'Failed to find book', error: error.message })
     }
 }
- 
+
 const updateBook = async (req, res) => {
     try {
         const { id } = req.params;
