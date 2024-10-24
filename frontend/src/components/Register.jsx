@@ -1,19 +1,38 @@
 import { useState } from "react"
 import { FaGoogle } from "react-icons/fa";
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { useForm } from 'react-hook-form';
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
     const [message, setMessage] = useState('');
+    const { registerUser, signupWithGoogle } = useAuth()
+    const navigate = useNavigate();
     const { register, handleSubmit, watch, formState: { errors }, } = useForm();
 
-    const onSubmit = (data) => {
-        console.log("DATA :", data);
+    // register user
+    const onSubmit = async (data) => {
+        try {
+            await registerUser(data.email, data.password)
+            alert("User registered Successfully!")
+        } catch (error) {
+            console.log('error :', error)
+            setMessage("Please provide a valid email and password")
+        }
     }
 
-    const handleGoogleSignIn = () => {
+    const handleGoogleSignIn = async () => {
         // google sign in 
+        try {
+            await signupWithGoogle()
+            alert('login Successfully!')
+            navigate('/')
+        } catch (error) {
+            console.error('error :', error)
+            setMessage("Please provide a valid email and password")
+        }
     }
+
     return (
         <div className='h-[calc(100vh-120px)] flex justify-center items-center'>
             <div className='w-full max-w-sm mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4'>
