@@ -11,15 +11,18 @@ const port = process.env.PORT || 5000;
 //middleware
 app.use(express.json());
 app.use(cors({
-    origin : [ 'http://localhost:5174'],
-    credentials : true,
+    origin: ['http://localhost:5174'],
+    credentials: true,
 }))
 
 const bookRoutes = require('./src/routes/book.route');
+const orderRoutes = require('./src/routes/order.route')
+
 //routes
 app.use('/api/v1/books', bookRoutes)
+app.use('/api/v1/orders', orderRoutes)
 
-async function main() { 
+async function main() {
     await mongoose.connect(process.env.MONGODB_URL);
     app.use("/", (req, res) => {
         res.send("Book store server is running....")

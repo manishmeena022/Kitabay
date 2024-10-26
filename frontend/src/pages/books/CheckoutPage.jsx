@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useCreateOrderMutation } from '../../redux/features/orders/ordersApi';
 
 const CheckoutPage = () => {
     const { cartItems } = useSelector(state => state.cart)
@@ -10,6 +11,7 @@ const CheckoutPage = () => {
     const { currentUser } = useAuth()
 
     const { register, handleSubmit, watch, formState: { errors }, } = useForm()
+    const [createOrder, { isLoading }] = useCreateOrderMutation()
     const navigate = useNavigate();
     const [isChecked, setIsChecked] = useState(false);
 
@@ -22,15 +24,23 @@ const CheckoutPage = () => {
                 city: data.city,
                 country: data.country,
                 state: data.state,
-                zipCode: data.zipCode,
+                zipCode: data.zipcode,
             },
             phone: data.phone,
             productIds: cartItems.map((item) => item?._id),
             totalPrice: totalPrice,
         }
 
-        console.log(newOrder);
+        try {
+            await createOrder(newOrder).unwrap();
+            navigate("/orders")
+        } catch (error) {
+            console.error("error creating an order :", error)
+            alert("Failed to place an order")
+        }
     }
+
+    if (isLoading) return <div>Loading....</div>
 
     return (
         <section>
