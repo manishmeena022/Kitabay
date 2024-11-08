@@ -5,7 +5,7 @@ const verifyAdminToken = (req, res, next) => {
     const token = req.headers['authentication']?.split(' ')[1];
 
     if (!token) {
-        return res.status(401).json({ message: 'Access Deniewd . No token provided' })
+        return res.status(401).json({ message: 'Access Denied. No token provided' })
     }
 
     jwt.verify(token, JWT_SECRET, (err, user) => {
