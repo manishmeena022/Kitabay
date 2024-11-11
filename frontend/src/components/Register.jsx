@@ -16,7 +16,7 @@ const Register = () => {
             await registerUser(data.email, data.password)
             alert("User registered Successfully!")
         } catch (error) {
-            console.log('error :', error)
+            console.error('error :', error)
             setMessage("Please provide a valid email and password")
         }
     }

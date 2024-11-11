@@ -2,8 +2,6 @@ const Book = require('../models/book.model');
 
 const createBook = async (req, res) => {
     try {
-        console.log("req body", req.body)
-
         const { title, description, category, trending, coverImage, oldPrice, newPrice } = req.body;
 
         if (!title || !description || !category || !trending === undefined || !coverImage) {

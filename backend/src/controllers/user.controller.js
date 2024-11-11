@@ -4,18 +4,15 @@ const JWT_SECRET = process.env.JWT_SECRET_KEY;
 
 const loginAdmin = async (req, res) => {
     const { username, password } = req.body;
-    console.log("USERNAME,  password", username, password)
     try {
         const admin = await User.findOne({ username })
-        console.log("ADMIN :", admin)
+
         if (!admin) {
             res.status(404).send({ message: 'Admin not found!' })
         }
         if (admin.password !== password) {
             res.status(401).send({ message: 'Invalid password!' })
         }
-
-        console.log("JWT_SECRET_KEY", JWT_SECRET)
 
         const token = jwt.sign(
             { id: admin._id, username: admin.username, role: admin.role },
